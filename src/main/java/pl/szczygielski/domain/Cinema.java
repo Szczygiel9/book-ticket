@@ -1,5 +1,7 @@
 package pl.szczygielski.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -17,6 +19,17 @@ public class Cinema implements Serializable {
     private Long id;
     private String city;
     private String address;
-    @OneToMany(mappedBy = "cinema", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "cinema")
+    @JsonIgnore
     private List<Seance> seances;
+
+    @Override
+    public String toString() {
+        return "Cinema{" +
+                "id=" + id +
+                ", city='" + city + '\'' +
+                ", address='" + address + '\'' +
+                ", seances=" + seances +
+                '}';
+    }
 }

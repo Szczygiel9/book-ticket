@@ -6,4 +6,5 @@ import pl.szczygielski.domain.Reservation;
 
 @Repository
 public interface ReservationRepository extends JpaRepository<Reservation, Long> {
+    Reservation findById(Long id);
 }

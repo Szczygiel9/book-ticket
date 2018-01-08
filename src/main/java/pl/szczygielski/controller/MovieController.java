@@ -6,7 +6,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import pl.szczygielski.domain.Movie;
+import pl.szczygielski.domain.Seance;
 import pl.szczygielski.repository.MovieRepository;
+import pl.szczygielski.service.MovieService;
 
 import java.net.URI;
 import java.util.List;
@@ -16,10 +18,12 @@ import java.util.List;
 public class MovieController {
 
     private MovieRepository movieRepository;
+    private MovieService movieService;
 
     @Autowired
-    public MovieController(MovieRepository movieRepository) {
+    public MovieController(MovieRepository movieRepository, MovieService movieService) {
         this.movieRepository = movieRepository;
+        this.movieService = movieService;
     }
 
     @GetMapping(path = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -34,6 +38,11 @@ public class MovieController {
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<Movie>> getMovies(){
         return ResponseEntity.ok(movieRepository.findAll());
+    }
+
+    @GetMapping(path = "/{id}/seances", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<Seance>> getSeancesOfMovie(@PathVariable Long id){
+        return ResponseEntity.ok(movieService.getSeancesofMovie(id));
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)

@@ -1,0 +1,23 @@
+{
+  "name": "book-ticket",
+  "homepage": "https://github.com/Szczygiel9/book-ticket",
+  "authors": [
+    "Szczygiel <daniel.szczygielski@pollub.edu.pl>"
+  ],
+  "description": "",
+  "main": "",
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular": "^1.6.8",
+    "angular-resource": "^1.6.8",
+    "angular-route": "^1.6.8"
+  }
+}

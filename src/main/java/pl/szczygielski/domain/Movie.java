@@ -1,5 +1,7 @@
 package pl.szczygielski.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -16,6 +18,7 @@ public class Movie {
     private String title;
     private String director;
     private String filmGenre;
-    @OneToMany(mappedBy = "movie", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "movie")
+    @JsonIgnore
     private List<Seance> seances;
 }

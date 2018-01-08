@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import pl.szczygielski.domain.Seance;
 import pl.szczygielski.repository.SeanceRepository;
+import pl.szczygielski.service.CinemaService;
 
 import java.net.URI;
 import java.util.List;
@@ -16,10 +17,12 @@ import java.util.List;
 public class SeanceController {
 
     private SeanceRepository seanceRepository;
+    private CinemaService cinemaService;
 
     @Autowired
-    public SeanceController(SeanceRepository seanceRepository) {
+    public SeanceController(SeanceRepository seanceRepository, CinemaService cinemaService) {
         this.seanceRepository = seanceRepository;
+        this.cinemaService = cinemaService;
     }
 
     @GetMapping(path = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -45,5 +48,10 @@ public class SeanceController {
                 .buildAndExpand(seance.getId())
                 .toUri();
         return ResponseEntity.created(location).body(seance);
+    }
+
+    @GetMapping("/add")
+    public void addSeanseToCinema(){
+        System.out.println(seanceRepository.findById(1L));
     }
 }

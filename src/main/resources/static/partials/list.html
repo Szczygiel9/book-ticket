@@ -1,0 +1,6 @@
+<h1>List of all movies</h1>
+<ul>
+    <li ng-repeat="m in listCtrl.movies">
+        <a ng-href="#!details/{{m.id}}">{{m.title}} - {{m.director}}</a>
+    </li>
+</ul>

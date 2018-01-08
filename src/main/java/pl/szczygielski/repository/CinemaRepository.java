@@ -6,4 +6,5 @@ import pl.szczygielski.domain.Cinema;
 
 @Repository
 public interface CinemaRepository extends JpaRepository<Cinema, Long>{
+    Cinema findById(Long id);
 }
