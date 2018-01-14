@@ -1,56 +1,24 @@
 'use strict';
-
-angular.module('app', ['ngRoute', 'ngResource'])
-    .config(function ($routeProvider) {
-        $routeProvider
-            .when('/list', {
-                templateUrl: 'partials/list.html',
-                controller: 'ListController',
-                controllerAs: 'listCtrl'
-            })
-            .when('/details/:id', {
-                templateUrl: 'partials/details.html',
-                controller: 'DetailsController',
-                controllerAs: 'detailsCtrl'
-            })
-            .when('/new', {
-                templateUrl: 'partials/new.html',
-                controller: 'NewController',
-                controllerAs: 'newCtrl'
-            })
-            .otherwise({
-                redirectTo: '/list'
+angular.module('app', ['ngResource'])
+    .controller('MovieController', function($http, $resource) {
+    var vm = this;
+    var Movie = $resource('api/movies/:movieId');
+    vm.movie = new Movie();
+    function refreshData() {
+        vm.movies = Movie.query(
+            function success(data, headers) {
+                console.log('Pobrano dane: ' +  data);
+                console.log(headers('Content-Type'));
+            },
+            function error(reponse) {
+                console.log(response.status); //np. 404
             });
-    })
-    .constant('MOVIE_ENDPOINT', '/api/movies/:id')
-    .factory('Movie', function($resource, MOVIE_ENDPOINT) {
-        return $resource(MOVIE_ENDPOINT);
-    })
-    .service('Movies', function(Movie) {
-        this.getAll = function() {
-            return Movie.query();
-        }
-        this.get = function(index) {
-            return Movie.get({id: index});
-        }
-        this.add = function(movie) {
-            movie.$save();
-        }
-    })
-    .controller('ListController', function(Movies) {
-        var vm = this;
-        vm.movies = Movies.getAll();
-    })
-    .controller('DetailsController', function($routeParams, Movies) {
-        var vm = this;
-        var movieIndex = $routeParams.id;
-        vm.movie = Movies.get(movieIndex);
-    })
-    .controller('NewController', function(Movies, Movie) {
-        var vm = this;
-        vm.movie = new Movie();
-        vm.saveMovie = function() {
-            Movies.add(vm.movie);
-            vm.movie = new Movies();
-        }
-    });
+    }
+
+    vm.loadData = function(id) {
+        vm.details = Movie.get({movieId: id});
+    }
+
+    vm.appName = 'Movie Manager';
+    refreshData();
+});

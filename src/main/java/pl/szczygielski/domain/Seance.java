@@ -20,6 +20,7 @@ public class Seance implements Serializable{
     private Long id;
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "movie_id")
+    @JsonIgnore
     private Movie movie;
     private String type;
     private String hour;
@@ -30,7 +31,6 @@ public class Seance implements Serializable{
     @JoinColumn(name = "cinema_id")
     private Cinema cinema;
     @OneToMany(mappedBy = "seance")
-    @JsonIgnore
     private List<Reservation> reservations;
 
     @Override

@@ -19,6 +19,5 @@ public class Movie {
     private String director;
     private String filmGenre;
     @OneToMany(mappedBy = "movie")
-    @JsonIgnore
     private List<Seance> seances;
 }

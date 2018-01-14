@@ -26,7 +26,7 @@ public class MovieController {
         this.movieService = movieService;
     }
 
-    @GetMapping(path = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(path = "/{id}",  produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Movie> getMovie(@PathVariable Long id){
         if (id > movieRepository.count()){
             return ResponseEntity.notFound().build();
