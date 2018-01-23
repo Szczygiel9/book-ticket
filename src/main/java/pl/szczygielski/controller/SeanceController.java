@@ -1,13 +1,14 @@
 package pl.szczygielski.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+import pl.szczygielski.domain.Reservation;
 import pl.szczygielski.domain.Seance;
-import pl.szczygielski.repository.SeanceRepository;
-import pl.szczygielski.service.CinemaService;
+import pl.szczygielski.service.*;
 
 import java.net.URI;
 import java.util.List;
@@ -16,32 +17,34 @@ import java.util.List;
 @RequestMapping("/api/seances")
 public class SeanceController {
 
-    private SeanceRepository seanceRepository;
     private CinemaService cinemaService;
+    private ReservationService reservationService;
+    private SeanceService seanceService;
 
     @Autowired
-    public SeanceController(SeanceRepository seanceRepository, CinemaService cinemaService) {
-        this.seanceRepository = seanceRepository;
+    public SeanceController(CinemaService cinemaService, ReservationService reservationService, SeanceService seanceService) {
         this.cinemaService = cinemaService;
+        this.reservationService = reservationService;
+        this.seanceService = seanceService;
     }
 
     @GetMapping(path = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Seance> getSeance(@PathVariable Long id){
-        if (id > seanceRepository.count()){
+        if (id > seanceService.countQuantity()){
             return ResponseEntity.notFound().build();
         } else {
-            return ResponseEntity.ok(seanceRepository.findOne(id));
+            return ResponseEntity.ok(seanceService.getOne(id));
         }
     }
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<Seance>> getSeances(){
-        return ResponseEntity.ok(seanceRepository.findAll());
+        return ResponseEntity.ok(seanceService.returnAll());
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> saveSeance(@RequestBody Seance seance){
-        seanceRepository.save(seance);
+        seanceService.saveSeance(seance);
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
                 .path("/{id}")
@@ -50,8 +53,19 @@ public class SeanceController {
         return ResponseEntity.created(location).body(seance);
     }
 
-    @GetMapping("/add")
-    public void addSeanseToCinema(){
-        System.out.println(seanceRepository.findById(1L));
+    @GetMapping("/{id}/add")
+    public ResponseEntity<Reservation> addSeanceToCinema(@PathVariable Long id){
+        Seance seance = seanceService.getOne(id);
+        Reservation reservation = reservationService.reservateSeat(seance);
+        if (reservation == null){
+            return ResponseEntity.status(HttpStatus.CONFLICT).build();
+        } else {
+            return ResponseEntity.ok().body(reservation);
+        }
+    }
+
+    @GetMapping("/in/{city}")
+    public ResponseEntity<List<Seance>> searchSeancesByCity(@PathVariable String city){
+        return ResponseEntity.ok(seanceService.searchSeancesByCity(city));
     }
 }

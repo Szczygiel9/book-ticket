@@ -6,7 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import pl.szczygielski.domain.Cinema;
-import pl.szczygielski.repository.CinemaRepository;
+import pl.szczygielski.service.CinemaService;
 
 import java.net.URI;
 import java.util.List;
@@ -15,31 +15,36 @@ import java.util.List;
 @RequestMapping("/api/cinemas")
 public class CinemaController {
 
-    private CinemaRepository cinemaRepository;
+    private CinemaService cinemaService;
 
     @Autowired
-    public CinemaController(CinemaRepository cinemaRepository) {
-        this.cinemaRepository = cinemaRepository;
+    public CinemaController(CinemaService cinemaService) {
+        this.cinemaService = cinemaService;
     }
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<Cinema>> getCinemas(){
-        List<Cinema> cinemas = cinemaRepository.findAll();
+        List<Cinema> cinemas = cinemaService.returnAll();
         return ResponseEntity.ok(cinemas);
     }
 
     @GetMapping(path = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Cinema> getCinema(@PathVariable Long id){
-        if (cinemaRepository.count() < id){
+        if (cinemaService.countQuantity() < id){
             return ResponseEntity.notFound().build();
         } else {
-            return ResponseEntity.ok(cinemaRepository.findOne(id));
+            return ResponseEntity.ok(cinemaService.getOne(id));
         }
+    }
+
+    @GetMapping(path = "/cities", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<String>> getCities(){
+        return ResponseEntity.ok(cinemaService.searchCities());
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> saveCinema(@RequestBody Cinema cinema){
-        cinemaRepository.save(cinema);
+        cinemaService.saveCinema(cinema);
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
                 .path("/{id}")

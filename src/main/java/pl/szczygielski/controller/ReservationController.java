@@ -6,7 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import pl.szczygielski.domain.Reservation;
-import pl.szczygielski.repository.ReservationRepository;
+import pl.szczygielski.service.ReservationService;
 
 import java.net.URI;
 import java.util.List;
@@ -15,32 +15,31 @@ import java.util.List;
 @RequestMapping("/api/reservations")
 public class ReservationController {
 
-    private ReservationRepository reservationRepository;
+    private ReservationService reservationService;
 
     @Autowired
-    public ReservationController(ReservationRepository reservationRepository) {
-        this.reservationRepository = reservationRepository;
+    public ReservationController(ReservationService reservationService) {
+        this.reservationService = reservationService;
     }
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public List<Reservation> getReservations(){
-        List<Reservation> reservations = reservationRepository.findAll();
-        return reservations;
+         return reservationService.returnAll();
     }
 
     @GetMapping(path = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Reservation> getReservation(@PathVariable Long id){
-        if(id > reservationRepository.count()){
+        if(id > reservationService.countQuantity()){
             return ResponseEntity.notFound().build();
         }
         else {
-            return ResponseEntity.ok(reservationRepository.findOne(id));
+            return ResponseEntity.ok(reservationService.getOne(id));
         }
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> saveReservation(@RequestBody Reservation reservation){
-        reservationRepository.save(reservation);
+        reservationService.saveReservation(reservation);
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
                 .path("/{id}")

@@ -1,22 +1,4 @@
-<!--<!DOCTYPE html>-->
-<!--<html data-ng-app="app">-->
-<!--<head>-->
-    <!--<meta charset="UTF-8">-->
-    <!--<title>Home</title>-->
-<!--</head>-->
-<!--<body>-->
 
-<!--<a href="#!list">Homepage</a>-->
-<!--<a href="#!new">Add New Movie</a>-->
-
-<!--<div ng-view></div>-->
-
-<!--<script type="text/javascript" src="bower_components/angular/angular.js"></script>-->
-<!--<script type="text/javascript" src="bower_components/angular-route/angular-route.js"></script>-->
-<!--<script type="text/javascript" src="bower_components/angular-resource/angular-resource.js"></script>-->
-<!--<script type="text/javascript" src="js/app.js"></script>-->
-<!--</body>-->
-<!--</html>-->
 <!DOCTYPE html>
 <html ng-app="app">
 <head>
@@ -25,6 +7,8 @@
 </head>
 <body ng-controller="MovieController as movieControl">
 Klikninj na film aby dowiedzieć się w jakich kinach jest grany.
+<br>
+
 
 <ul>
     <li ng-repeat="mov in movieControl.movies" ng-click="movieControl.loadData(mov.id)">
@@ -32,6 +16,9 @@ Klikninj na film aby dowiedzieć się w jakich kinach jest grany.
     </li>
 </ul>
 
+<select ng-show="movieControl.details">
+    <option ng-repeat="se in movieControl.details.seances" ng-click="movieControl.showMovies(se.cinema.city)">{{se.cinema.city}}</option>
+</select>
 
 <table border="1" ng-show="movieControl.details">
     <thead>
@@ -40,6 +27,8 @@ Klikninj na film aby dowiedzieć się w jakich kinach jest grany.
         <th>Godzina</th>
         <th>Typ</th>
         <th>Kino</th>
+        <th>Wolne miejsca</th>
+        <th>Rezerwuj</th>
     </tr>
     </thead>
     <tbody>
@@ -48,13 +37,17 @@ Klikninj na film aby dowiedzieć się w jakich kinach jest grany.
         <td>{{se.hour}}</td>
         <td>{{se.type}}</td>
         <td>{{se.cinema.city}}, {{se.cinema.address}}</td>
+        <td>{{se.freeSeats}}/{{se.freeSeats + se.reservatedSeats}}</td>
+        <!--<td><a ng-href="" ng-click=" movieControl.addReservation(se.id)">Reserv</a> </td>-->
+        <td><button style="height: 20px; width: 80px" ng-click=" movieControl.addReservation(se.id)">Rezerwuj!</button> </td>
     </tr>
     </tbody>
 </table>
 
-<!--<div ng-show="movieControl.details">-->
-    <!--<p ng-repeat="se in movieControl.details.seances">Seans {{se.id}}: {{se.day}} {{se.hour}} {{se.type}} {{se.cinema}} Wolne miejsca: {{se.reser}}</p>-->
-<!--</div>-->
+<div ng-show="movieControl.det">
+    Zarezerwowano! Twój identyfikatro rezerwacji to: <b>{{movieControl.det.name}}</b>, zapisz go i podaj przy kasie biletowej.
+</div>
+
 <script type="text/javascript" src="bower_components/angular/angular.js"></script>
 <script type="text/javascript" src="bower_components/angular-resource/angular-resource.js"></script>
 <script type="text/javascript" src="js/app.js"></script>

@@ -14,7 +14,7 @@ public class Reservation implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String name;
+    private int name;
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "seance_id")
     @JsonIgnore

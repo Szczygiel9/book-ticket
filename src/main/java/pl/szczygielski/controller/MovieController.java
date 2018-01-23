@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import pl.szczygielski.domain.Movie;
 import pl.szczygielski.domain.Seance;
-import pl.szczygielski.repository.MovieRepository;
 import pl.szczygielski.service.MovieService;
 
 import java.net.URI;
@@ -17,37 +16,35 @@ import java.util.List;
 @RequestMapping("/api/movies")
 public class MovieController {
 
-    private MovieRepository movieRepository;
     private MovieService movieService;
 
     @Autowired
-    public MovieController(MovieRepository movieRepository, MovieService movieService) {
-        this.movieRepository = movieRepository;
+    public MovieController(MovieService movieService) {
         this.movieService = movieService;
     }
 
     @GetMapping(path = "/{id}",  produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Movie> getMovie(@PathVariable Long id){
-        if (id > movieRepository.count()){
+        if (id > movieService.countQuantity()){
             return ResponseEntity.notFound().build();
         } else {
-            return ResponseEntity.ok(movieRepository.findOne(id));
+            return ResponseEntity.ok(movieService.getOne(id));
         }
     }
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<Movie>> getMovies(){
-        return ResponseEntity.ok(movieRepository.findAll());
+        return ResponseEntity.ok(movieService.returnAll());
     }
 
     @GetMapping(path = "/{id}/seances", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<Seance>> getSeancesOfMovie(@PathVariable Long id){
-        return ResponseEntity.ok(movieService.getSeancesofMovie(id));
+        return ResponseEntity.ok(movieService.getSeancesOfMovie(id));
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> saveMovie(@RequestBody Movie movie){
-        movieRepository.save(movie);
+        movieService.saveMovie(movie);
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
                 .path("/{id}")
