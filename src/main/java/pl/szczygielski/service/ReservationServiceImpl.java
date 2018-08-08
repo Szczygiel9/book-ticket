@@ -7,6 +7,7 @@ import pl.szczygielski.domain.Seance;
 import pl.szczygielski.repository.ReservationRepository;
 import pl.szczygielski.repository.SeanceRepository;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.Random;
 
@@ -24,7 +25,11 @@ public class ReservationServiceImpl implements ReservationService{
 
     @Override
     public Reservation getOne(Long id) {
-        return reservationRepository.findOne(id);
+        final Reservation reservation = reservationRepository.findOne(id);
+        if (reservation == null) {
+            throw new EntityNotFoundException();
+        }
+        return reservation;
     }
 
     @Override

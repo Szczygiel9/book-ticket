@@ -5,6 +5,7 @@ import org.springframework.stereotype.Component;
 import pl.szczygielski.domain.Seance;
 import pl.szczygielski.repository.SeanceRepository;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -25,7 +26,11 @@ public class SeanceServiceImpl implements SeanceService{
 
     @Override
     public Seance getOne(Long id) {
-        return seanceRepository.findOne(id);
+        final Seance seance = seanceRepository.findOne(id);
+        if (seance == null) {
+            throw new EntityNotFoundException();
+        }
+        return seance;
     }
 
     @Override
@@ -41,7 +46,6 @@ public class SeanceServiceImpl implements SeanceService{
     @Override
     public List<Seance> searchSeancesByCity(String city) {
         List<Seance> allSeances = seanceRepository.findAll();
-        List<Seance> seancesIncity = allSeances.stream().filter(a -> a.getCinema().getCity().equals(city)).collect(Collectors.toList());
-        return seancesIncity;
+        return allSeances.stream().filter(a -> a.getCinema().getCity().equals(city)).collect(Collectors.toList());
     }
 }

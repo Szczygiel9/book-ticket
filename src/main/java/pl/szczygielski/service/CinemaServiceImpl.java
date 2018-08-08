@@ -7,6 +7,7 @@ import pl.szczygielski.domain.Seance;
 import pl.szczygielski.repository.CinemaRepository;
 import pl.szczygielski.repository.SeanceRepository;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,13 +23,17 @@ public class CinemaServiceImpl implements CinemaService {
         this.cinemaRepository = cinemaRepository;
     }
 
-    public Cinema saveCinema(Cinema cinema){
+    public Cinema saveCinema(Cinema cinema) {
         return cinemaRepository.save(cinema);
     }
 
     @Override
     public Cinema getOne(Long id) {
-        return cinemaRepository.findOne(id);
+        final Cinema cinema = cinemaRepository.findOne(id);
+        if (cinema == null) {
+            throw new EntityNotFoundException();
+        }
+        return cinema;
     }
 
     @Override
@@ -41,7 +46,7 @@ public class CinemaServiceImpl implements CinemaService {
         return cinemaRepository.count();
     }
 
-    public void addSeanceToCinema(Long cinemaId, Long seanceId){
+    public void addSeanceToCinema(Long cinemaId, Long seanceId) {
         Cinema cinema = cinemaRepository.findById(cinemaId);
         Seance seance = seanceRepository.findById(seanceId);
 
@@ -49,15 +54,15 @@ public class CinemaServiceImpl implements CinemaService {
         cinemaRepository.save(cinema);
     }
 
-    public List<String> searchCities(){
-        List<Seance> seances =  seanceRepository.findAll();
-        List<String > cities = new ArrayList<>();
-        seances.forEach(seance ->{
+    public List<String> searchCities() {
+        List<Seance> seances = seanceRepository.findAll();
+        List<String> cities = new ArrayList<>();
+        seances.forEach(seance -> {
             String city = seance.getCinema().getCity();
-            if (!cities.contains(city)){
+            if (!cities.contains(city)) {
                 cities.add(city);
             }
-        } );
+        });
         return cities;
     }
 }

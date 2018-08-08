@@ -6,10 +6,11 @@ import pl.szczygielski.domain.Movie;
 import pl.szczygielski.domain.Seance;
 import pl.szczygielski.repository.MovieRepository;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.List;
 
 @Component
-public class MovieServiceImpl implements MovieService{
+public class MovieServiceImpl implements MovieService {
 
     private MovieRepository movieRepository;
 
@@ -25,7 +26,11 @@ public class MovieServiceImpl implements MovieService{
 
     @Override
     public Movie getOne(Long id) {
-        return movieRepository.findOne(id);
+        final Movie movie = movieRepository.findOne(id);
+        if (movie == null) {
+            throw new EntityNotFoundException();
+        }
+        return movie;
     }
 
     @Override
@@ -38,7 +43,7 @@ public class MovieServiceImpl implements MovieService{
         return movieRepository.count();
     }
 
-    public List<Seance> getSeancesOfMovie(Long movieId){
+    public List<Seance> getSeancesOfMovie(Long movieId) {
         Movie movie = movieRepository.findOne(movieId);
         return movie.getSeances();
     }
