@@ -3,6 +3,8 @@ package pl.szczygielski.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import pl.szczygielski.domain.Seance;
+import pl.szczygielski.dto.SeanceDTO;
+import pl.szczygielski.mapper.SeanceMapper;
 import pl.szczygielski.repository.SeanceRepository;
 
 import javax.persistence.EntityNotFoundException;
@@ -10,13 +12,16 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Component
-public class SeanceServiceImpl implements SeanceService{
+public class SeanceServiceImpl implements SeanceService {
 
     private SeanceRepository seanceRepository;
 
+    private SeanceMapper seanceMapper;
+
     @Autowired
-    public SeanceServiceImpl(SeanceRepository seanceRepository) {
+    public SeanceServiceImpl(SeanceRepository seanceRepository, final SeanceMapper seanceMapper) {
         this.seanceRepository = seanceRepository;
+        this.seanceMapper = seanceMapper;
     }
 
     @Override
@@ -25,17 +30,18 @@ public class SeanceServiceImpl implements SeanceService{
     }
 
     @Override
-    public Seance getOne(Long id) {
+    public SeanceDTO getOne(Long id) {
         final Seance seance = seanceRepository.findOne(id);
         if (seance == null) {
             throw new EntityNotFoundException();
         }
-        return seance;
+        return seanceMapper.mapSeanceToSeanceDTO(seance);
     }
 
     @Override
-    public List<Seance> returnAll() {
-        return seanceRepository.findAll();
+    public List<SeanceDTO> returnAll() {
+        final List<Seance> allSeances = seanceRepository.findAll();
+        return seanceMapper.mapSeancesToDTO(allSeances);
     }
 
     @Override
@@ -44,8 +50,9 @@ public class SeanceServiceImpl implements SeanceService{
     }
 
     @Override
-    public List<Seance> searchSeancesByCity(String city) {
+    public List<SeanceDTO> searchSeancesByCity(String city) {
         List<Seance> allSeances = seanceRepository.findAll();
-        return allSeances.stream().filter(a -> a.getCinema().getCity().equals(city)).collect(Collectors.toList());
+        final List<Seance> seancesByCity = allSeances.stream().filter(a -> a.getCinema().getCity().equals(city)).collect(Collectors.toList());
+        return seanceMapper.mapSeancesToDTO(seancesByCity);
     }
 }

@@ -1,6 +1,5 @@
 package pl.szczygielski.controller;
 
-import org.assertj.core.util.Lists;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,7 +7,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
-import pl.szczygielski.domain.Cinema;
+import pl.szczygielski.dto.CinemaDTO;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.Arrays;
@@ -33,7 +32,7 @@ public class CinemaControllerTest {
 
     @Test
     public void getAllCinemasTest() throws Exception {
-        final Cinema cinema = createCinema();
+        final CinemaDTO cinema = createCinema();
         given(cinemaController.getCinemas()).willReturn(Arrays.asList(cinema));
 
         mockMvc.perform(get("/api/cinemas/"))
@@ -78,13 +77,12 @@ public class CinemaControllerTest {
         return Arrays.asList("Lublin", "NY", "Moskwa", "WWa");
     }
 
-    private Cinema createCinema() {
-        final Cinema cinema = new Cinema();
-        cinema.setId(1L);
-        cinema.setCity("Lublin");
-        cinema.setAddress("address");
-        cinema.setSeances(Lists.emptyList());
-        return cinema;
+    private CinemaDTO createCinema() {
+        return CinemaDTO.builder()
+                .id(1L)
+                .city("Lublin")
+                .address("address")
+                .build();
     }
 
 }

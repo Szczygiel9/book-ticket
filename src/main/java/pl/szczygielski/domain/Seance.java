@@ -1,8 +1,6 @@
 package pl.szczygielski.domain;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -25,8 +23,8 @@ public class Seance implements Serializable{
     private String type;
     private String hour;
     private String day;
-    private int freeSeats;
-    private int reservatedSeats;
+    private Integer freeSeats;
+    private Integer reservedSeats;
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "cinema_id")
     private Cinema cinema;

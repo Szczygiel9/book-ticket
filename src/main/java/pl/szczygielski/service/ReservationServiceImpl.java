@@ -4,6 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import pl.szczygielski.domain.Reservation;
 import pl.szczygielski.domain.Seance;
+import pl.szczygielski.dto.ReservationDTO;
+import pl.szczygielski.mapper.ReservationMapper;
 import pl.szczygielski.repository.ReservationRepository;
 import pl.szczygielski.repository.SeanceRepository;
 
@@ -16,25 +18,28 @@ public class ReservationServiceImpl implements ReservationService{
 
     private SeanceRepository seanceRepository;
     private ReservationRepository reservationRepository;
+    private ReservationMapper reservationMapper;
 
     @Autowired
-    public ReservationServiceImpl(SeanceRepository seanceRepository, ReservationRepository reservationRepository) {
+    public ReservationServiceImpl(SeanceRepository seanceRepository, ReservationRepository reservationRepository, final ReservationMapper reservationMapper) {
         this.seanceRepository = seanceRepository;
         this.reservationRepository = reservationRepository;
+        this.reservationMapper = reservationMapper;
     }
 
     @Override
-    public Reservation getOne(Long id) {
+    public ReservationDTO getOne(Long id) {
         final Reservation reservation = reservationRepository.findOne(id);
         if (reservation == null) {
             throw new EntityNotFoundException();
         }
-        return reservation;
+        return reservationMapper.mapReservationToReservationDTO(reservation);
     }
 
     @Override
-    public List<Reservation> returnAll() {
-        return reservationRepository.findAll();
+    public List<ReservationDTO> returnAll() {
+        final List<Reservation> reservations = reservationRepository.findAll();
+        return reservationMapper.mapReservationsToDTO(reservations);
     }
 
     @Override
@@ -47,10 +52,12 @@ public class ReservationServiceImpl implements ReservationService{
         return reservationRepository.save(reservation);
     }
 
-    public Reservation reservateSeat(Seance seance){
+    public Reservation reservateSeat(Long seanceId) {
+
+        final Seance seance = seanceRepository.getOne(seanceId);
         if(seance.getFreeSeats() > 0) {
             seance.setFreeSeats(seance.getFreeSeats() - 1);
-            seance.setReservatedSeats(seance.getReservatedSeats() + 1);
+            seance.setReservedSeats(seance.getReservedSeats() + 1);
             Reservation reservation = new Reservation();
             Random random = new Random();
             reservation.setName(random.nextInt(1000000));

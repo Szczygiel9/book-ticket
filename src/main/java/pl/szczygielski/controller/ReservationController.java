@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import pl.szczygielski.domain.Reservation;
+import pl.szczygielski.dto.ReservationDTO;
 import pl.szczygielski.service.ReservationService;
 
 import java.util.List;
@@ -20,12 +21,12 @@ public class ReservationController {
     }
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<Reservation> getReservations() {
+    public List<ReservationDTO> getReservations() {
         return reservationService.returnAll();
     }
 
     @GetMapping(path = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public Reservation getReservation(final @PathVariable Long id) {
+    public ReservationDTO getReservation(final @PathVariable Long id) {
         return reservationService.getOne(id);
     }
 

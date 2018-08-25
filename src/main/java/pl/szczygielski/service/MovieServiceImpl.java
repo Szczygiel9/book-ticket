@@ -3,7 +3,10 @@ package pl.szczygielski.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import pl.szczygielski.domain.Movie;
-import pl.szczygielski.domain.Seance;
+import pl.szczygielski.dto.MovieDTO;
+import pl.szczygielski.dto.SeanceDTO;
+import pl.szczygielski.mapper.MovieMapper;
+import pl.szczygielski.mapper.SeanceMapper;
 import pl.szczygielski.repository.MovieRepository;
 
 import javax.persistence.EntityNotFoundException;
@@ -14,9 +17,15 @@ public class MovieServiceImpl implements MovieService {
 
     private MovieRepository movieRepository;
 
+    private MovieMapper movieMapper;
+
+    private SeanceMapper seanceMapper;
+
     @Autowired
-    public MovieServiceImpl(MovieRepository movieRepository) {
+    public MovieServiceImpl(MovieRepository movieRepository, final MovieMapper movieMapper, final SeanceMapper seanceMapper) {
         this.movieRepository = movieRepository;
+        this.movieMapper = movieMapper;
+        this.seanceMapper = seanceMapper;
     }
 
     @Override
@@ -25,17 +34,18 @@ public class MovieServiceImpl implements MovieService {
     }
 
     @Override
-    public Movie getOne(Long id) {
+    public MovieDTO getOne(Long id) {
         final Movie movie = movieRepository.findOne(id);
         if (movie == null) {
             throw new EntityNotFoundException();
         }
-        return movie;
+        return movieMapper.mapMovieToMovieDTO(movie);
     }
 
     @Override
-    public List<Movie> returnAll() {
-        return movieRepository.findAll();
+    public List<MovieDTO> returnAll() {
+        final List<Movie> allMovies = movieRepository.findAll();
+        return movieMapper.mapMovieListToMovieListDTO(allMovies);
     }
 
     @Override
@@ -43,8 +53,8 @@ public class MovieServiceImpl implements MovieService {
         return movieRepository.count();
     }
 
-    public List<Seance> getSeancesOfMovie(Long movieId) {
+    public List<SeanceDTO> getSeancesOfMovie(Long movieId) {
         Movie movie = movieRepository.findOne(movieId);
-        return movie.getSeances();
+        return seanceMapper.mapSeancesToDTO(movie.getSeances());
     }
 }

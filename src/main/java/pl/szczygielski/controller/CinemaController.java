@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import pl.szczygielski.domain.Cinema;
+import pl.szczygielski.dto.CinemaDTO;
 import pl.szczygielski.service.CinemaService;
 
 import java.util.List;
@@ -20,12 +21,12 @@ public class CinemaController {
     }
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<Cinema> getCinemas() {
+    public List<CinemaDTO> getCinemas() {
         return cinemaService.returnAll();
     }
 
     @GetMapping(path = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public Cinema getCinema(final @PathVariable Long id) {
+    public CinemaDTO getCinema(final @PathVariable Long id) {
         return cinemaService.getOne(id);
     }
 

@@ -5,6 +5,7 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import pl.szczygielski.domain.Reservation;
 import pl.szczygielski.domain.Seance;
+import pl.szczygielski.dto.SeanceDTO;
 import pl.szczygielski.service.ReservationService;
 import pl.szczygielski.service.SeanceService;
 
@@ -24,12 +25,12 @@ public class SeanceController {
     }
 
     @GetMapping(path = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public Seance getSeance(@PathVariable Long id) {
+    public SeanceDTO getSeance(@PathVariable Long id) {
         return seanceService.getOne(id);
     }
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<Seance> getSeances() {
+    public List<SeanceDTO> getSeances() {
         return seanceService.returnAll();
     }
 
@@ -38,14 +39,13 @@ public class SeanceController {
         seanceService.saveSeance(seance);
     }
 
-    @GetMapping("/{id}/add")
-    public Reservation addSeanceToCinema(@PathVariable Long id) {
-        Seance seance = seanceService.getOne(id);
-        return reservationService.reservateSeat(seance);
+    @GetMapping("/{seanceId}/add")
+    public Reservation addSeanceToCinema(@PathVariable Long seanceId) {
+        return reservationService.reservateSeat(seanceId);
     }
 
     @GetMapping("/in/{city}")
-    public List<Seance> searchSeancesByCity(@PathVariable String city) {
+    public List<SeanceDTO> searchSeancesByCity(@PathVariable String city) {
         return seanceService.searchSeancesByCity(city);
     }
 }

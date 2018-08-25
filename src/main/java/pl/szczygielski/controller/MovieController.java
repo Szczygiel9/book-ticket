@@ -4,13 +4,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import pl.szczygielski.domain.Movie;
-import pl.szczygielski.domain.Seance;
+import pl.szczygielski.dto.MovieDTO;
+import pl.szczygielski.dto.SeanceDTO;
 import pl.szczygielski.service.MovieService;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/movies")
+@CrossOrigin
 public class MovieController {
 
     private MovieService movieService;
@@ -21,17 +23,17 @@ public class MovieController {
     }
 
     @GetMapping(path = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public Movie getMovie(final @PathVariable Long id) {
+    public MovieDTO getMovie(final @PathVariable Long id) {
         return movieService.getOne(id);
     }
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<Movie> getMovies() {
+    public List<MovieDTO> getMovies() {
         return movieService.returnAll();
     }
 
     @GetMapping(path = "/{id}/seances", produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<Seance> getSeancesOfMovie(final @PathVariable Long id) {
+    public List<SeanceDTO> getSeancesOfMovie(final @PathVariable Long id) {
         return movieService.getSeancesOfMovie(id);
     }
 

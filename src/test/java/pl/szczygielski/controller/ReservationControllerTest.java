@@ -8,7 +8,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
-import pl.szczygielski.domain.Reservation;
+import pl.szczygielski.dto.ReservationDTO;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.Arrays;
@@ -58,10 +58,10 @@ public class ReservationControllerTest {
                 .andExpect(status().isNotFound());
     }
 
-    private Reservation getReservation() {
-        final Reservation reservation = new Reservation();
-        reservation.setId(1L);
-        reservation.setName(20);
-        return reservation;
+    private ReservationDTO getReservation() {
+        return ReservationDTO.builder()
+                .id(1L)
+                .name(20)
+                .build();
     }
 }

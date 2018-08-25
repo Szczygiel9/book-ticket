@@ -2,15 +2,19 @@ package pl.szczygielski.service;
 
 import org.springframework.stereotype.Service;
 import pl.szczygielski.domain.Movie;
-import pl.szczygielski.domain.Seance;
+import pl.szczygielski.dto.MovieDTO;
+import pl.szczygielski.dto.SeanceDTO;
 
 import java.util.List;
 
 @Service
 public interface MovieService {
     Movie saveMovie(Movie movie);
-    Movie getOne(Long id);
-    List<Movie> returnAll();
+
+    MovieDTO getOne(Long id);
+
+    List<MovieDTO> returnAll();
     Long countQuantity ();
-    List<Seance> getSeancesOfMovie(Long movieId);
+
+    List<SeanceDTO> getSeancesOfMovie(Long movieId);
 }

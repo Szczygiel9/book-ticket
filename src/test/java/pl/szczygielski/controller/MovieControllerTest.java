@@ -7,7 +7,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
-import pl.szczygielski.domain.Movie;
+import pl.szczygielski.dto.MovieDTO;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.Arrays;
@@ -61,12 +61,12 @@ public class MovieControllerTest {
                 .andExpect(status().isNotFound());
     }
 
-    private Movie getMovie() {
-        final Movie movie = new Movie();
-        movie.setId(1L);
-        movie.setTitle("Titanic");
-        movie.setDirector("Cameron");
-        movie.setFilmGenre("Comedy");
-        return movie;
+    private MovieDTO getMovie() {
+        return MovieDTO.builder()
+                .id(1L)
+                .title("Titanic")
+                .director("Cameron")
+                .filmGenre("Comedy")
+                .build();
     }
 }

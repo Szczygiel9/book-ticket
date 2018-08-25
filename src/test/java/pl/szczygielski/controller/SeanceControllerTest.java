@@ -7,7 +7,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
-import pl.szczygielski.domain.Seance;
+import pl.szczygielski.dto.SeanceDTO;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.Arrays;
@@ -37,7 +37,7 @@ public class SeanceControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].id", is(1)))
                 .andExpect(jsonPath("$[0].freeSeats", is(30)))
-                .andExpect(jsonPath("$[0].reservatedSeats", is(15)))
+                .andExpect(jsonPath("$[0].reservedSeats", is(15)))
                 .andExpect(jsonPath("$[0].day", is("01")))
                 .andExpect(jsonPath("$[0].hour", is("18:30")))
                 .andExpect(jsonPath("$[0].type", is("2D")));
@@ -51,7 +51,7 @@ public class SeanceControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id", is(1)))
                 .andExpect(jsonPath("$.freeSeats", is(30)))
-                .andExpect(jsonPath("$.reservatedSeats", is(15)))
+                .andExpect(jsonPath("$.reservedSeats", is(15)))
                 .andExpect(jsonPath("$.day", is("01")))
                 .andExpect(jsonPath("$.hour", is("18:30")))
                 .andExpect(jsonPath("$.type", is("2D")));
@@ -63,17 +63,16 @@ public class SeanceControllerTest {
 
         mockMvc.perform(get("/api/seances/1"))
                 .andExpect(status().isNotFound());
-
     }
 
-    private Seance getSeance() {
-        final Seance seance = new Seance();
-        seance.setId(1L);
-        seance.setFreeSeats(30);
-        seance.setReservatedSeats(15);
-        seance.setDay("01");
-        seance.setHour("18:30");
-        seance.setType("2D");
-        return seance;
+    private SeanceDTO getSeance() {
+        return SeanceDTO.builder()
+                .id(1L)
+                .freeSeats(30)
+                .reservedSeats(15)
+                .day("01")
+                .hour("18:30")
+                .type("2D")
+                .build();
     }
 }

@@ -4,6 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import pl.szczygielski.domain.Cinema;
 import pl.szczygielski.domain.Seance;
+import pl.szczygielski.dto.CinemaDTO;
+import pl.szczygielski.mapper.CinemaMapper;
 import pl.szczygielski.repository.CinemaRepository;
 import pl.szczygielski.repository.SeanceRepository;
 
@@ -16,11 +18,13 @@ public class CinemaServiceImpl implements CinemaService {
 
     private SeanceRepository seanceRepository;
     private CinemaRepository cinemaRepository;
+    private CinemaMapper cinemaMapper;
 
     @Autowired
-    public CinemaServiceImpl(SeanceRepository seanceRepository, CinemaRepository cinemaRepository) {
+    public CinemaServiceImpl(SeanceRepository seanceRepository, CinemaRepository cinemaRepository, final CinemaMapper cinemaMapper) {
         this.seanceRepository = seanceRepository;
         this.cinemaRepository = cinemaRepository;
+        this.cinemaMapper = cinemaMapper;
     }
 
     public Cinema saveCinema(Cinema cinema) {
@@ -28,17 +32,17 @@ public class CinemaServiceImpl implements CinemaService {
     }
 
     @Override
-    public Cinema getOne(Long id) {
+    public CinemaDTO getOne(Long id) {
         final Cinema cinema = cinemaRepository.findOne(id);
         if (cinema == null) {
             throw new EntityNotFoundException();
         }
-        return cinema;
+        return cinemaMapper.mapCinemaToCinemaDTO(cinema);
     }
 
     @Override
-    public List<Cinema> returnAll() {
-        return cinemaRepository.findAll();
+    public List<CinemaDTO> returnAll() {
+        return cinemaMapper.mapCinemasToCinemasListDTO(cinemaRepository.findAll());
     }
 
     @Override
