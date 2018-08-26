@@ -22,17 +22,17 @@ public class CinemaController {
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public List<CinemaDTO> getCinemas() {
-        return cinemaService.returnAll();
+        return cinemaService.getAllCinemas();
     }
 
     @GetMapping(path = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public CinemaDTO getCinema(final @PathVariable Long id) {
-        return cinemaService.getOne(id);
+        return cinemaService.getCinemaById(id);
     }
 
     @GetMapping(path = "/cities", produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<String> getCities() {
-        return cinemaService.searchCities();
+    public List<String> getCitesWhereMoviesArePlayed() {
+        return cinemaService.getCitesWhereMoviesArePlayed();
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)

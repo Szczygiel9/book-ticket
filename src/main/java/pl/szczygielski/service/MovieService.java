@@ -11,9 +11,9 @@ import java.util.List;
 public interface MovieService {
     Movie saveMovie(Movie movie);
 
-    MovieDTO getOne(Long id);
+    MovieDTO getMovieById(Long id);
 
-    List<MovieDTO> returnAll();
+    List<MovieDTO> getAllMovies();
     Long countQuantity ();
 
     List<SeanceDTO> getSeancesOfMovie(Long movieId);

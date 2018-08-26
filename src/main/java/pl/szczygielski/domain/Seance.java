@@ -31,15 +31,4 @@ public class Seance implements Serializable{
     @OneToMany(mappedBy = "seance")
     private List<Reservation> reservations;
 
-    @Override
-    public String toString() {
-        return "Seance{" +
-                "id=" + id +
-                ", movie=" + movie.getTitle() + movie.getDirector() + movie.getFilmGenre() +
-                ", type='" + type + '\'' +
-                ", hour='" + hour + '\'' +
-                ", day='" + day + '\'' +
-                ", cinema=" + cinema.getAddress() + cinema.getCity() +
-                '}';
-    }
 }

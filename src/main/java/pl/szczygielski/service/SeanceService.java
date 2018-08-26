@@ -10,10 +10,10 @@ import java.util.List;
 public interface SeanceService {
     Seance saveSeance(Seance seance);
 
-    SeanceDTO getOne(Long id);
+    SeanceDTO getSeanceById(Long id);
 
-    List<SeanceDTO> returnAll();
+    List<SeanceDTO> getAllSeances();
     Long countQuantity();
 
-    List<SeanceDTO> searchSeancesByCity(String city);
+    List<SeanceDTO> getSeancesInCity(String city);
 }

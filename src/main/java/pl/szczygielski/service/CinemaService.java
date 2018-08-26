@@ -10,10 +10,11 @@ import java.util.List;
 public interface CinemaService {
     Cinema saveCinema(Cinema cinema);
 
-    CinemaDTO getOne(Long id);
+    CinemaDTO getCinemaById(Long id);
 
-    List<CinemaDTO> returnAll();
+    List<CinemaDTO> getAllCinemas();
     Long countQuantity();
     void addSeanceToCinema(Long cinemaId, Long seanceId);
-    List<String> searchCities();
+
+    List<String> getCitesWhereMoviesArePlayed();
 }

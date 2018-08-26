@@ -22,12 +22,12 @@ public class ReservationController {
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public List<ReservationDTO> getReservations() {
-        return reservationService.returnAll();
+        return reservationService.getAllReservations();
     }
 
     @GetMapping(path = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ReservationDTO getReservation(final @PathVariable Long id) {
-        return reservationService.getOne(id);
+        return reservationService.getReservationById(id);
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)

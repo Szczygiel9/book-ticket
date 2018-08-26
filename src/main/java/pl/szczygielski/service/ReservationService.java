@@ -8,9 +8,9 @@ import java.util.List;
 
 @Service
 public interface ReservationService {
-    ReservationDTO getOne(Long id);
+    ReservationDTO getReservationById(Long id);
 
-    List<ReservationDTO> returnAll();
+    List<ReservationDTO> getAllReservations();
 
     Long countQuantity();
 

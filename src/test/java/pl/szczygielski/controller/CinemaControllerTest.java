@@ -63,7 +63,7 @@ public class CinemaControllerTest {
     @Test
     public void getCitiesTest() throws Exception {
         final List<String> cities = getCities();
-        given(cinemaController.getCities()).willReturn(cities);
+        given(cinemaController.getCitesWhereMoviesArePlayed()).willReturn(cities);
 
         mockMvc.perform(get("/api/cinemas/cities"))
                 .andExpect(status().isOk())

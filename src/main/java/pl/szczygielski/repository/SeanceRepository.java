@@ -1,13 +1,18 @@
 package pl.szczygielski.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Modifying;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
-import pl.szczygielski.domain.Cinema;
 import pl.szczygielski.domain.Seance;
+
+import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface SeanceRepository extends JpaRepository<Seance, Long> {
-    Seance findById(Long id);
+
+    Optional<Seance> findById(final Long id);
+
+    List<Seance> getSeancesByMovieId(final Long id);
+
+    List<Seance> getSeancesByCinemaCity(final String city);
 }

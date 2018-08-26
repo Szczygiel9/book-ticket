@@ -26,12 +26,12 @@ public class SeanceController {
 
     @GetMapping(path = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public SeanceDTO getSeance(@PathVariable Long id) {
-        return seanceService.getOne(id);
+        return seanceService.getSeanceById(id);
     }
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public List<SeanceDTO> getSeances() {
-        return seanceService.returnAll();
+        return seanceService.getAllSeances();
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -46,6 +46,6 @@ public class SeanceController {
 
     @GetMapping("/in/{city}")
     public List<SeanceDTO> searchSeancesByCity(@PathVariable String city) {
-        return seanceService.searchSeancesByCity(city);
+        return seanceService.getSeancesInCity(city);
     }
 }

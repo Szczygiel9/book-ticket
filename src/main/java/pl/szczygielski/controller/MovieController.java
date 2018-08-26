@@ -24,12 +24,12 @@ public class MovieController {
 
     @GetMapping(path = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public MovieDTO getMovie(final @PathVariable Long id) {
-        return movieService.getOne(id);
+        return movieService.getMovieById(id);
     }
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public List<MovieDTO> getMovies() {
-        return movieService.returnAll();
+        return movieService.getAllMovies();
     }
 
     @GetMapping(path = "/{id}/seances", produces = MediaType.APPLICATION_JSON_VALUE)
