@@ -26,7 +26,8 @@ public class SeanceController {
 
     @GetMapping(path = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public SeanceDTO getSeance(@PathVariable Long id) {
-        return seanceService.getSeanceById(id);
+        final SeanceDTO seanceById = seanceService.getSeanceById(id);
+        return seanceById;
     }
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)

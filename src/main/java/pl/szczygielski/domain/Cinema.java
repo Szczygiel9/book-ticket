@@ -16,8 +16,9 @@ public class Cinema implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_cinema")
     private Long id;
-    private String city;
-    private String address;
+    private String name;
+    @Embedded
+    private Address address;
     @OneToMany(mappedBy = "cinema")
     @JsonIgnore
     private List<Seance> seances;

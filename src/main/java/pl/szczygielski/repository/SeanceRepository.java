@@ -14,5 +14,5 @@ public interface SeanceRepository extends JpaRepository<Seance, Long> {
 
     List<Seance> getSeancesByMovieId(final Long id);
 
-    List<Seance> getSeancesByCinemaCity(final String city);
+    List<Seance> getSeancesByCinemaAddressCity(final String city);
 }

@@ -20,7 +20,7 @@ public class ReservationMapperImpl implements ReservationMapper {
     public ReservationDTO mapReservationToReservationDTO(final Reservation reservation) {
         return ReservationDTO.builder()
                 .id(reservation.getId())
-                .name(reservation.getName())
+                .reservationCode(reservation.getReservationCode())
                 .build();
     }
 }

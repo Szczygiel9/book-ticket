@@ -1,5 +1,6 @@
 package pl.szczygielski.controller;
 
+import lombok.SneakyThrows;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,10 +8,13 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
+import pl.szczygielski.domain.SeanceType;
 import pl.szczygielski.dto.SeanceDTO;
 
 import javax.persistence.EntityNotFoundException;
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
+import java.util.Date;
 
 import static org.hamcrest.core.Is.is;
 import static org.mockito.BDDMockito.given;
@@ -36,25 +40,24 @@ public class SeanceControllerTest {
         mockMvc.perform(get("/api/seances"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].id", is(1)))
+                .andExpect(jsonPath("$[0].type", is("_2D")))
+                .andExpect(jsonPath("$[0].seanceDate", is("2018-03-01 18:30")))
                 .andExpect(jsonPath("$[0].freeSeats", is(30)))
-                .andExpect(jsonPath("$[0].reservedSeats", is(15)))
-                .andExpect(jsonPath("$[0].day", is("01")))
-                .andExpect(jsonPath("$[0].hour", is("18:30")))
-                .andExpect(jsonPath("$[0].type", is("2D")));
+                .andExpect(jsonPath("$[0].reservedSeats", is(15)));
     }
 
     @Test
     public void getOneSeanceTest() throws Exception {
-        given(seanceController.getSeance(1L)).willReturn(getSeance());
+        final SeanceDTO seance = getSeance();
+        given(seanceController.getSeance(1L)).willReturn(seance);
 
         mockMvc.perform(get("/api/seances/1"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id", is(1)))
+                .andExpect(jsonPath("$.type", is("_2D")))
+                .andExpect(jsonPath("$.seanceDate", is("2018-03-01 18:30")))
                 .andExpect(jsonPath("$.freeSeats", is(30)))
-                .andExpect(jsonPath("$.reservedSeats", is(15)))
-                .andExpect(jsonPath("$.day", is("01")))
-                .andExpect(jsonPath("$.hour", is("18:30")))
-                .andExpect(jsonPath("$.type", is("2D")));
+                .andExpect(jsonPath("$.reservedSeats", is(15)));
     }
 
     @Test
@@ -70,9 +73,14 @@ public class SeanceControllerTest {
                 .id(1L)
                 .freeSeats(30)
                 .reservedSeats(15)
-                .day("01")
-                .hour("18:30")
-                .type("2D")
+                .seanceDate(getDate())
+                .type(SeanceType._2D)
                 .build();
+    }
+
+    @SneakyThrows
+    private Date getDate() {
+        final SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        return simpleDateFormat.parse("2018-03-01 18:30");
     }
 }

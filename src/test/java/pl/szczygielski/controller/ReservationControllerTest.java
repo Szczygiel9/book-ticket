@@ -37,7 +37,7 @@ public class ReservationControllerTest {
         mockMvc.perform(get("/api/reservations"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].id", is(1)))
-                .andExpect(jsonPath("$[0].name", is(20)));
+                .andExpect(jsonPath("$[0].reservationCode", is(20)));
     }
 
     @Test
@@ -47,7 +47,7 @@ public class ReservationControllerTest {
         mockMvc.perform(get("/api/reservations/1"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id", is(1)))
-                .andExpect(jsonPath("$.name", is(20)));
+                .andExpect(jsonPath("$.reservationCode", is(20)));
     }
 
     @Test
@@ -61,7 +61,7 @@ public class ReservationControllerTest {
     private ReservationDTO getReservation() {
         return ReservationDTO.builder()
                 .id(1L)
-                .name(20)
+                .reservationCode(20)
                 .build();
     }
 }

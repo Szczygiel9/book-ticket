@@ -5,6 +5,7 @@ import lombok.Data;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -20,9 +21,10 @@ public class Seance implements Serializable{
     @JoinColumn(name = "movie_id")
     @JsonIgnore
     private Movie movie;
-    private String type;
-    private String hour;
-    private String day;
+    @Enumerated(EnumType.STRING)
+    private SeanceType type;
+    @Basic
+    private Date seanceDate;
     private Integer freeSeats;
     private Integer reservedSeats;
     @ManyToOne(fetch = FetchType.EAGER)

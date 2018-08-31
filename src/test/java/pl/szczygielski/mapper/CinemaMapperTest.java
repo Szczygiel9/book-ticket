@@ -2,6 +2,8 @@ package pl.szczygielski.mapper;
 
 import org.junit.Before;
 import org.junit.Test;
+import pl.szczygielski.controller.CinemaControllerTest;
+import pl.szczygielski.domain.Address;
 import pl.szczygielski.domain.Cinema;
 import pl.szczygielski.dto.CinemaDTO;
 import pl.szczygielski.mapper.impl.CinemaMapperImpl;
@@ -29,8 +31,12 @@ public class CinemaMapperTest {
 
     private void testCinema(final CinemaDTO cinemaDTO) {
         assertEquals(Long.valueOf(44), cinemaDTO.getId());
-        assertEquals("Lipowa 8", cinemaDTO.getAddress());
-        assertEquals("Lublin", cinemaDTO.getCity());
+        assertEquals("Cinema City", cinemaDTO.getName());
+        final Address expectedAddress = CinemaControllerTest.getAddress();
+        final Address actualAddress = cinemaDTO.getAddress();
+        assertEquals(expectedAddress.getCity(), actualAddress.getCity());
+        assertEquals(expectedAddress.getNumber(), actualAddress.getNumber());
+        assertEquals(expectedAddress.getStreet(), actualAddress.getStreet());
     }
 
     @Test
@@ -42,9 +48,10 @@ public class CinemaMapperTest {
 
     public static Cinema getCinema() {
         final Cinema cinema = new Cinema();
+        cinema.setName("Cinema City");
         cinema.setId(44L);
-        cinema.setAddress("Lipowa 8");
-        cinema.setCity("Lublin");
+        cinema.setAddress(CinemaControllerTest.getAddress());
         return cinema;
     }
+
 }

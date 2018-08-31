@@ -8,5 +8,5 @@ import lombok.Getter;
 public class ReservationDTO {
 
     private Long id;
-    private Integer name;
+    private Integer reservationCode;
 }

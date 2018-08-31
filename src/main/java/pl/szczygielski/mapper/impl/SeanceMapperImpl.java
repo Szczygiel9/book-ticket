@@ -27,8 +27,7 @@ public class SeanceMapperImpl implements SeanceMapper {
         final SeanceDTO.SeanceDTOBuilder builder = SeanceDTO.builder()
                 .id(seance.getId())
                 .type(seance.getType())
-                .hour(seance.getHour())
-                .day(seance.getDay())
+                .seanceDate(seance.getSeanceDate())
                 .freeSeats(seance.getFreeSeats())
                 .reservedSeats(seance.getReservedSeats());
         buildCinema(builder, seance);

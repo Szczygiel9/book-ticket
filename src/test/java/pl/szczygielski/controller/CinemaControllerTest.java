@@ -7,6 +7,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
+import pl.szczygielski.domain.Address;
 import pl.szczygielski.dto.CinemaDTO;
 
 import javax.persistence.EntityNotFoundException;
@@ -38,8 +39,10 @@ public class CinemaControllerTest {
         mockMvc.perform(get("/api/cinemas/"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].id", is(1)))
-                .andExpect(jsonPath("$[0].city", is("Lublin")))
-                .andExpect(jsonPath("$[0].address", is("address")));
+                .andExpect(jsonPath("$[0].name", is("Cinema City")))
+                .andExpect(jsonPath("$[0].address.city", is("Lublin")))
+                .andExpect(jsonPath("$[0].address.number", is("21")))
+                .andExpect(jsonPath("$[0].address.street", is("Filaretów")));
     }
 
     @Test
@@ -49,8 +52,10 @@ public class CinemaControllerTest {
         mockMvc.perform(get("/api/cinemas/1"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id", is(1)))
-                .andExpect(jsonPath("$.city", is("Lublin")))
-                .andExpect(jsonPath("$.address", is("address")));
+                .andExpect(jsonPath("$.name", is("Cinema City")))
+                .andExpect(jsonPath("$.address.city", is("Lublin")))
+                .andExpect(jsonPath("$.address.number", is("21")))
+                .andExpect(jsonPath("$.address.street", is("Filaretów")));
     }
 
     @Test
@@ -80,9 +85,17 @@ public class CinemaControllerTest {
     private CinemaDTO createCinema() {
         return CinemaDTO.builder()
                 .id(1L)
-                .city("Lublin")
-                .address("address")
+                .name("Cinema City")
+                .address(getAddress())
                 .build();
+    }
+
+    public static Address getAddress() {
+        final Address address = new Address();
+        address.setCity("Lublin");
+        address.setNumber("21");
+        address.setStreet("Filaretów");
+        return address;
     }
 
 }

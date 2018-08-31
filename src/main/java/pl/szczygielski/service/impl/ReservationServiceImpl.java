@@ -86,7 +86,7 @@ public class ReservationServiceImpl implements ReservationService {
     private Reservation getNewReservation(final Seance seance) {
         Reservation reservation = new Reservation();
         Random random = new Random();
-        reservation.setName(random.nextInt(1000000));
+        reservation.setReservationCode(random.nextInt(1000000));
         reservation.setSeance(seance);
         return reservation;
     }

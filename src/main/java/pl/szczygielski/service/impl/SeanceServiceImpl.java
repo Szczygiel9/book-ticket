@@ -48,7 +48,7 @@ public class SeanceServiceImpl implements SeanceService {
 
     @Override
     public List<SeanceDTO> getSeancesInCity(final String city) {
-        final List<Seance> seancesByCity = seanceRepository.getSeancesByCinemaCity(city);
+        final List<Seance> seancesByCity = seanceRepository.getSeancesByCinemaAddressCity(city);
         return seanceMapper.mapSeancesToDTO(seancesByCity);
     }
 }

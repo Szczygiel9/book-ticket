@@ -25,7 +25,7 @@ public class ReservationMapperTest {
         final ReservationDTO reservationDTO = reservationMapper.mapReservationToReservationDTO(getReservation());
 
         assertEquals(Long.valueOf(23), reservationDTO.getId());
-        assertEquals(Integer.valueOf(43), reservationDTO.getName());
+        assertEquals(Integer.valueOf(43), reservationDTO.getReservationCode());
     }
 
     @Test
@@ -41,28 +41,28 @@ public class ReservationMapperTest {
         assertEquals(Long.valueOf(2), reservationDTO2.getId());
         assertEquals(Long.valueOf(3), reservationDTO3.getId());
 
-        assertEquals(Integer.valueOf(11), reservationDTO1.getName());
-        assertEquals(Integer.valueOf(22), reservationDTO2.getName());
-        assertEquals(Integer.valueOf(33), reservationDTO3.getName());
+        assertEquals(Integer.valueOf(11), reservationDTO1.getReservationCode());
+        assertEquals(Integer.valueOf(22), reservationDTO2.getReservationCode());
+        assertEquals(Integer.valueOf(33), reservationDTO3.getReservationCode());
     }
 
     private Reservation getReservation() {
         final Reservation reservation = new Reservation();
         reservation.setId(23L);
-        reservation.setName(43);
+        reservation.setReservationCode(43);
         return reservation;
     }
 
     public static List<Reservation> getReservationsList() {
         final Reservation reservation1 = new Reservation();
         reservation1.setId(1L);
-        reservation1.setName(11);
+        reservation1.setReservationCode(11);
         final Reservation reservation2 = new Reservation();
         reservation2.setId(2L);
-        reservation2.setName(22);
+        reservation2.setReservationCode(22);
         final Reservation reservation3 = new Reservation();
         reservation3.setId(3L);
-        reservation3.setName(33);
+        reservation3.setReservationCode(33);
 
         return Arrays.asList(reservation1, reservation2, reservation3);
     }

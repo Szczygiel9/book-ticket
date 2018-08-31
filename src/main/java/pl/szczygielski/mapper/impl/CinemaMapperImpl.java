@@ -20,7 +20,7 @@ public class CinemaMapperImpl implements CinemaMapper {
     public CinemaDTO mapCinemaToCinemaDTO(final Cinema cinema) {
         return CinemaDTO.builder()
                 .id(cinema.getId())
-                .city(cinema.getCity())
+                .name(cinema.getName())
                 .address(cinema.getAddress())
                 .build();
     }
